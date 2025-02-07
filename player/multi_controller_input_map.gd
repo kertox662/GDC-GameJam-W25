@@ -1,7 +1,7 @@
 extends Node
 
 const NON_ACTION = "-"
-const DEADZONE = 0.1
+const DEADZONE = 0.5
 
 var device: InputDevice
 var actions: Array[String]
@@ -36,23 +36,37 @@ func is_action_just_pressed(action: String) -> bool:
 func is_action_just_released(action: String) -> bool:
 	return action in actions and actionJustReleasedDict[action]
 
-func get_action_value(action: String) -> float:
-	if action not in actions:
-		return 0
-	return actionValueDict[action]
+func get_joystick_value(pos_axis_action: String) -> float:
+	var axis = getJoystickAxis(pos_axis_action)
+	var axis_value = Input.get_joy_axis(device.deviceId, axis)
+	# return the value if the magnitude is greater than the deadzone.
+	return axis_value if abs(axis_value) >= DEADZONE else 0
+
+func update_joystick_pressed() -> void:
+	for action in actionDirections:
+		# actionDirections will adjust for the negative and positive directions.
+		var actionState = get_joystick_value(action) * actionDirections[action] >= DEADZONE
+		var prevState = actionPressedDict[action]
+		actionPressedDict[action] = actionState
+		# Check that previous state is different from current state
+		actionJustPressedDict[action] = actionState and not prevState
+		actionJustReleasedDict[action] = (not actionState) and prevState
 
 func _input(event: InputEvent) -> void:
 	var event_action = get_event_action_type(event)
 	if event_action == NON_ACTION or not device.isInputEventSameDevice(event):
 		return
+	
+	if isControllerJoystickEvent(event):
+		actionValueDict[event_action] = event.axis_value
+		return
+	
 	if event.is_pressed():
 		actionPressedDict[event_action] = true
 		actionJustPressedDict[event_action] = true
-		actionJustReleasedDict[event_action] = false
-		actionValueDict[event_action] = 0
+		actionValueDict[event_action] = 1
 	elif event.is_released():
 		actionPressedDict[event_action] = false
-		actionJustPressedDict[event_action] = false
 		actionJustReleasedDict[event_action] = true
 		actionValueDict[event_action] = 0
 	

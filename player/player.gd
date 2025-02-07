@@ -47,16 +47,24 @@ func _ready():
 	$Input.initialize(inputDevice, actions, actionDirs)
 
 func get_input() -> Dictionary:
+	var x = int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left))
+	var y = int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up))
+	if useController:
+		x = sign($Input.get_joystick_value("move_right"))
+		y = sign($Input.get_joystick_value("move_down"))
+		
 	return {
-		"x": int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left)),
-		"y": int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up)),
-		"just_jump": $Input.is_action_just_pressed(up) == true,
-		"jump": $Input.is_action_pressed(up) == true,
-		"released_jump": $Input.is_action_just_released(up) == true,
+		"x": x,
+		"y": y,
+		"just_jump": $Input.is_action_just_pressed(up),
+		"jump": $Input.is_action_pressed(up),
+		"released_jump": $Input.is_action_just_released(up),
 		"shoot": $Input.is_action_pressed(shoot)
 	}
 
 func _physics_process(delta: float) -> void:
+	if useController:
+		$Input.update_joystick_pressed()
 	x_movement(delta)
 	jump_logic(delta)
 	apply_gravity(delta)
