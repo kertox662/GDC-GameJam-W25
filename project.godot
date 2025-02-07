@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="GDC-GameJam-W25"
+run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
+
+[dotnet]
+
+project/assembly_name="GDC-GameJam-W25"
 
 [rendering]
 
