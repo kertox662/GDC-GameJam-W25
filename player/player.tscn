@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhgvlhgmv0eku"]
+[gd_scene load_steps=8 format=3 uid="uid://bhgvlhgmv0eku"]
 
-[ext_resource type="Script" path="res://Player.gd" id="1_mwy4v"]
+[ext_resource type="Script" path="res://player/player.gd" id="1_732um"]
 [ext_resource type="Texture2D" uid="uid://c8qcxsd5hm63b" path="res://assets/player/Hero.png" id="1_x01oy"]
+[ext_resource type="PackedScene" uid="uid://bcn1utyhietww" path="res://player/multi_controller_input_map.tscn" id="3_us6v1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5b4ev"]
 atlas = ExtResource("1_x01oy")
@@ -29,11 +30,15 @@ animations = [{
 radius = 7.0
 height = 16.0
 
-[node name="player" type="CharacterBody2D"]
-script = ExtResource("1_mwy4v")
+[node name="Player" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+script = ExtResource("1_732um")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_gleal")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_kv2pt")
+
+[node name="Input" parent="." instance=ExtResource("3_us6v1")]

@@ -26,22 +26,35 @@ var jump_coyote_timer : float = 0
 var jump_buffer_timer : float = 0
 var is_jumping := false
 
-var up = "ui_up"
-var down = "ui_down"
-var left = "ui_left"
-var right = "ui_right"
+var up = "move_up"
+var down = "move_down"
+var left = "move_left"
+var right = "move_right"
 var shoot = "shoot"
+var actions: Array[String] = [up, down, left, right, shoot]
+var actionDirs: Dictionary = {
+	up: -1,
+	down: 1,
+	left: -1,
+	right: 1
+}
+
+@export var deviceId = 0
+@export var useController = false
+
+func _ready():
+	var inputDevice = InputDevice.new(deviceId, useController)
+	$Input.initialize(inputDevice, actions, actionDirs)
 
 func get_input() -> Dictionary:
 	return {
-		"x": int(Input.is_action_pressed(right)) - int(Input.is_action_pressed(left)),
-		"y": int(Input.is_action_pressed(down)) - int(Input.is_action_pressed(up)),
-		"just_jump": Input.is_action_just_pressed(up) == true,
-		"jump": Input.is_action_pressed(up) == true,
-		"released_jump": Input.is_action_just_released(up) == true,
-		"shoot": Input.is_action_pressed(shoot)
+		"x": int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left)),
+		"y": int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up)),
+		"just_jump": $Input.is_action_just_pressed(up) == true,
+		"jump": $Input.is_action_pressed(up) == true,
+		"released_jump": $Input.is_action_just_released(up) == true,
+		"shoot": $Input.is_action_pressed(shoot)
 	}
-
 
 func _physics_process(delta: float) -> void:
 	x_movement(delta)

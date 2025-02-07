@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm78eiulcfil4"]
+
+[ext_resource type="Script" path="res://player/input_device.gd" id="1_4v1dh"]
+
+[node name="InputDevice" type="Node"]
+script = ExtResource("1_4v1dh")
