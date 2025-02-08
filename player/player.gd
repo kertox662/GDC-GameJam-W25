@@ -88,7 +88,7 @@ func x_movement(delta: float) -> void:
 		$AnimatedSprite2D.play("idle")
 		return
 	
-	$AnimatedSprite2D.play("running")
+	
 	# If we are doing movement inputs and above max speed, don't accelerate nor decelerate
 	# Except if we are turning
 	# (This keeps our momentum gained from outside or slopes)
@@ -131,6 +131,8 @@ func jump_logic(_delta: float) -> void:
 	if is_on_floor():
 		jump_coyote_timer = jump_coyote
 		is_jumping = false
+	else:
+		$AnimatedSprite2D.play("jump")
 	if get_input()["just_jump"]:
 		jump_buffer_timer = jump_buffer
 	
