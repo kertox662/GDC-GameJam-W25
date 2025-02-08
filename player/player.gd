@@ -31,7 +31,8 @@ var down = "move_down"
 var left = "move_left"
 var right = "move_right"
 var shoot = "shoot"
-var actions: Array[String] = [up, down, left, right, shoot]
+var jump = "jump"
+var actions: Array[String] = [up, down, left, right, shoot, jump]
 var actionDirs: Dictionary = {
 	up: -1,
 	down: 1,
@@ -46,6 +47,9 @@ func _ready():
 	var inputDevice = InputDevice.new(deviceId, useController)
 	$Input.initialize(inputDevice, actions, actionDirs)
 
+func _process(delta):
+	shooting_logic(delta)
+
 func get_input() -> Dictionary:
 	var x = int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left))
 	var y = int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up))
@@ -56,9 +60,9 @@ func get_input() -> Dictionary:
 	return {
 		"x": x,
 		"y": y,
-		"just_jump": $Input.is_action_just_pressed(up),
-		"jump": $Input.is_action_pressed(up),
-		"released_jump": $Input.is_action_just_released(up),
+		"just_jump": $Input.is_action_just_pressed(jump),
+		"jump": $Input.is_action_pressed(jump),
+		"released_jump": $Input.is_action_just_released(jump),
 		"shoot": $Input.is_action_pressed(shoot)
 	}
 
@@ -71,18 +75,6 @@ func _physics_process(delta: float) -> void:
 
 	timers(delta)
 	move_and_slide()
-
-#func size_change_logic() -> void:
-	#if get_input()["change_size"]:
-		#size_tween = self.create_tween()
-		#if size == "small":
-			#size = "normal"
-			#size_tween.tween_property(self, "scale", Vector2(1, 1), 0.1)
-			#size_tween.tween_property($ScreenCamera, "zoom", Vector2(2, 2), 0.1)
-		#else:
-			#size = "small"
-			#size_tween.tween_property(self, "scale", Vector2(small_size_multiplier, small_size_multiplier), 0.1)
-			#size_tween.tween_property($ScreenCamera, "zoom", Vector2(6, 6), 0.1)
 
 
 func x_movement(delta: float) -> void:
@@ -174,3 +166,16 @@ func timers(delta: float) -> void:
 	# This way everything is contained in just 1 script with no node requirements
 	jump_coyote_timer -= delta
 	jump_buffer_timer -= delta
+
+
+var cooldown = 0
+func shooting_logic(delta: float) -> void:
+	cooldown -= delta
+	#if $Input.is_action_pressed("shoot"):
+		## create projectile
+		#if cooldown <= 0:
+			#var new_projectile : Projectile = Globals.projectile.instantiate()
+			#new_projectile.linear_velocity = velocity
+			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
+			#get_parent().add_child(new_projectile)
+			#cooldown = 1
