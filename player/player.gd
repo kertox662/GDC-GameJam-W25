@@ -11,7 +11,7 @@ var acceleration: float = 2000
 var turning_acceleration : float = 6400
 var deceleration: float = 3200
 
-var gravity_acceleration : float = 2000
+var gravity_acceleration : float = 1000
 var gravity_max : float = 600
 var gravity_multiplier_when_small : float = 0.3
 
