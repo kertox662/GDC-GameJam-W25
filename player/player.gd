@@ -167,15 +167,21 @@ func timers(delta: float) -> void:
 	jump_coyote_timer -= delta
 	jump_buffer_timer -= delta
 
-
 var cooldown = 0
 func shooting_logic(delta: float) -> void:
 	cooldown -= delta
-	#if $Input.is_action_pressed("shoot"):
-		## create projectile
-		#if cooldown <= 0:
-			#var new_projectile : Projectile = Globals.projectile.instantiate()
-			#new_projectile.linear_velocity = velocity
+	if $Input.is_action_pressed("shoot"):
+		# create projectile
+		if cooldown <= 0:
+			print("shooting!")
+			var new_projectile : Projectile = Globals.projectile.instantiate()
+			get_parent().add_child(new_projectile)
+			var projectile_velocity = Vector2(0, -500)
+			new_projectile.linear_velocity = velocity + projectile_velocity
 			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
-			#get_parent().add_child(new_projectile)
-			#cooldown = 1
+			new_projectile.global_position = global_position + projectile_velocity.normalized() * $bullet_spawn.shape.radius
+			cooldown = 0.2
+
+
+func _on_hurtbox_body_entered(body):
+	body.queue_free()

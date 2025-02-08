@@ -1,11 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://o8s4bc0b0goy"]
+[gd_scene load_steps=5 format=3 uid="uid://o8s4bc0b0goy"]
 
 [ext_resource type="Script" path="res://projectile.gd" id="1_x35ce"]
+[ext_resource type="Texture2D" uid="uid://452bpeosmtv6" path="res://icon.svg" id="2_diynb"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eeo3r"]
+bounce = 1.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4xqrr"]
+height = 20.0
 
 [node name="Projectile" type="RigidBody2D"]
+collision_layer = 128
+collision_mask = 128
+physics_material_override = SubResource("PhysicsMaterial_eeo3r")
 script = ExtResource("1_x35ce")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_4xqrr")
+one_way_collision_margin = 0.0
+
+[node name="Icon" type="Sprite2D" parent="."]
+scale = Vector2(0.152344, 0.152344)
+texture = ExtResource("2_diynb")

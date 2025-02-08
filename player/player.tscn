@@ -1,44 +1,87 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhgvlhgmv0eku"]
+[gd_scene load_steps=13 format=3 uid="uid://bhgvlhgmv0eku"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_732um"]
-[ext_resource type="Texture2D" uid="uid://c8qcxsd5hm63b" path="res://assets/player/Hero.png" id="1_x01oy"]
+[ext_resource type="Texture2D" uid="uid://bgm47fx8ixodk" path="res://assets/player/idle, jump, shoot, death sprite_sheet.png" id="2_irspi"]
 [ext_resource type="PackedScene" uid="uid://bcn1utyhietww" path="res://player/multi_controller_input_map.tscn" id="3_us6v1"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5b4ev"]
-atlas = ExtResource("1_x01oy")
-region = Rect2(0, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_owp38"]
+atlas = ExtResource("2_irspi")
+region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xdi4r"]
-atlas = ExtResource("1_x01oy")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ft7bg"]
+atlas = ExtResource("2_irspi")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ureei"]
+atlas = ExtResource("2_irspi")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87pdn"]
+atlas = ExtResource("2_irspi")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7vfh"]
+atlas = ExtResource("2_irspi")
+region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gleal"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5b4ev")
+"texture": SubResource("AtlasTexture_owp38")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xdi4r")
+"texture": SubResource("AtlasTexture_ft7bg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ureei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87pdn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c7vfh")
 }],
 "loop": true,
-"name": &"default",
+"name": &"idle",
 "speed": 5.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kv2pt"]
 radius = 7.0
-height = 16.0
+height = 32.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_luofc"]
+radius = 27.0185
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3pqji"]
+radius = 5.0
+height = 28.0
 
 [node name="Player" type="CharacterBody2D"]
-scale = Vector2(3, 3)
 script = ExtResource("1_732um")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_gleal")
+animation = &"idle"
+frame_progress = 0.828121
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_kv2pt")
 
 [node name="Input" parent="." instance=ExtResource("3_us6v1")]
+
+[node name="bullet_spawn" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_luofc")
+disabled = true
+
+[node name="hurtbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_3pqji")
+
+[connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
