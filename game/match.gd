@@ -17,6 +17,13 @@ var winGoal = 0                    # points to win
 var currentLevelIndex : int = -1   # index corresponding to name "level_i"
 var currentLevel : Level = null    # current level in play
 
+var player_animations = [
+	preload("res://player/red_player_sprites.tres"),
+	preload("res://player/blue_player_sprites.tres"),
+	preload("res://player/green_player_sprites.tres"),
+	preload("res://player/yellow_player_sprites.tres"),
+]
+
 func initialize_game(configs:Array, win_goal:int) -> void:
 	playerNum = configs.size()
 	playerConfigs = configs
@@ -49,6 +56,7 @@ func init_match(level_index : int = -1) -> void:
 		var player : Player = playerScene.instantiate()
 		player.deviceId = playerConfigs[i][0]
 		player.useController = playerConfigs[i][1]
+		player.get_node("AnimatedSprite2D").sprite_frames = player_animations[playerConfigs[i][3]]
 		add_child(player)
 		player.position = spawnpoint
 		player.killed.connect(playerDeath)
@@ -61,8 +69,8 @@ func clear_players():
 	playerList = []
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	initialize_game([[0,false],[0,true],[1,true],[2,true]], 3)
+#func _ready() -> void:
+	#initialize_game([[0,false],[0,true],[1,true],[2,true]], 3)
 
 func playerDeath(playerDied) -> void:
 	alivePlayers -= 1	
