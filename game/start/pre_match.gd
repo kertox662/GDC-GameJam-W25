@@ -34,14 +34,17 @@ func handle_player_leave(device: InputDevice):
 
 func handle_match_start():
 	var players = []
+	var ind = 0
 	for child in $VBoxContainer/PlayerJoinBlocks.get_children():
 		if child.inputDevice:
-			players.push_back(child.inputDevice.as_tuple())
+			var data = child.get_player_data()
+			data.push_back(ind)
+			players.push_back(data)
+		ind += 1
 	if players.size() < 2:
 		return
 	var matchInst = matchScene.instantiate()
 	matchInst.initialize_game(players, 3)
-	print(typeof(matchInst))
 	get_tree().root.add_child(matchInst)
 	queue_free()
 

@@ -17,3 +17,8 @@ func set_player_joined(device: InputDevice, name: String):
 func set_player_left():
 	inputDevice = null
 	$MarginContainer/VBoxContainer/Button.text = DEFAULT_TEXT
+
+func get_player_data():
+	var dev = inputDevice.as_tuple()
+	dev.push_back($MarginContainer/VBoxContainer/TextureRect.texture)
+	return dev
