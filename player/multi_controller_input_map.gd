@@ -74,6 +74,8 @@ func update_joystick_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if not device.isInputEventSameDevice(event):
 			return
+	if event.is_class("InputEventKey") and event.echo:
+		return
 	var event_actions = get_event_action_type(event)
 	inputMu.lock()
 	for event_action in event_actions:
