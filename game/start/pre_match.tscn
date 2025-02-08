@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://dkeefijbsnaf8"]
+
+[ext_resource type="Script" path="res://game/start/pre_match.gd" id="1_guk6k"]
+[ext_resource type="PackedScene" uid="uid://y16x30x1wsop" path="res://game/start/player_join_block.tscn" id="1_nq4ow"]
+[ext_resource type="Texture2D" uid="uid://5hl3jhustntw" path="res://assets/player/red-idle.png" id="3_ewj4a"]
+[ext_resource type="Texture2D" uid="uid://dn0k48alnjllf" path="res://assets/player/blue-idle.png" id="4_yffdk"]
+[ext_resource type="Texture2D" uid="uid://o14k0yauc2hp" path="res://assets/player/green-idle.png" id="5_037k0"]
+[ext_resource type="Texture2D" uid="uid://c00rhru4wgrx5" path="res://assets/player/yellow-idle.png" id="6_4tx6m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4w35"]
+bg_color = Color(0.908657, 0.826105, 0.769626, 1)
+
+[node name="PreMatch" type="PanelContainer"]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 8.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_f4w35")
+script = ExtResource("1_guk6k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="PlayerJoinBlocks" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_direction = 2
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PlayerJoinBlock" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+layout_mode = 2
+playerIcon = ExtResource("3_ewj4a")
+
+[node name="PlayerJoinBlock2" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+layout_mode = 2
+playerIcon = ExtResource("4_yffdk")
+
+[node name="PlayerJoinBlock3" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+layout_mode = 2
+playerIcon = ExtResource("5_037k0")
+
+[node name="PlayerJoinBlock4" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+layout_mode = 2
+playerIcon = ExtResource("6_4tx6m")

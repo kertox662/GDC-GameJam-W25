@@ -18,3 +18,9 @@ func isInputEventSameDevice(event: InputEvent) -> bool:
 	var isControllerEvent = (event.is_class("InputEventJoypadButton") or
 							event.is_class("InputEventJoypadMotion"))
 	return isController == isControllerEvent
+
+func as_tuple() -> Array:
+	return [deviceId, isController]
+
+func equals(other: InputDevice) -> bool:
+	return deviceId == other.deviceId and isController == other.isController

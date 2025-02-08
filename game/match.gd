@@ -61,8 +61,8 @@ func clear_players():
 	playerList = []
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	initialize_game([[0,false],[0,true],[1,true],[2,true]], 3)
+#func _ready() -> void:
+	#initialize_game([[0,false],[0,true],[1,true],[2,true]], 3)
 
 func playerDeath(playerDied) -> void:
 	alivePlayers -= 1	
