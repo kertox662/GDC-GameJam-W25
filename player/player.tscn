@@ -100,7 +100,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kv2pt"]
 radius = 7.0
-height = 32.0
+height = 20.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_luofc"]
 radius = 27.0185
@@ -118,6 +118,7 @@ sprite_frames = SubResource("SpriteFrames_gleal")
 animation = &"jump"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
 shape = SubResource("CapsuleShape2D_kv2pt")
 
 [node name="Input" parent="." instance=ExtResource("3_us6v1")]

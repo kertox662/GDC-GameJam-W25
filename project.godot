@@ -74,6 +74,15 @@ jump={
 ]
 }
 
+[layer_names]
+
+2d_render/layer_1="Player 1"
+2d_render/layer_2="Player 2"
+2d_render/layer_3="Player 3"
+2d_render/layer_4="Player 4"
+2d_render/layer_7="Map & Projectiles"
+2d_render/layer_8="Projectiles only"
+
 [rendering]
 
 renderer/rendering_method="mobile"

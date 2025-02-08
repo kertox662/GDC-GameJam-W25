@@ -6,13 +6,13 @@ signal killed(CharacterBody2D)
 var face_direction := 1
 var x_dir := 1
 
-var max_speed: float = 400
+var max_speed: float = 150	
 var acceleration: float = 2400
 var turning_acceleration : float = 9600
 var deceleration: float = 3200
 
-var gravity_acceleration : float = 3840
-var gravity_max : float = 1020
+var gravity_acceleration : float = 2000
+var gravity_max : float = 600
 var gravity_multiplier_when_small : float = 0.3
 
 var jump_height: float = 50
@@ -90,7 +90,7 @@ func x_movement(delta: float) -> void:
 		velocity.x = Vector2(velocity.x, 0).move_toward(Vector2(0,0), deceleration * delta).x
 		$AnimatedSprite2D.play("idle")
 		return
-	
+	$AnimatedSprite2D.play("running")
 	
 	# If we are doing movement inputs and above max speed, don't accelerate nor decelerate
 	# Except if we are turning
@@ -187,8 +187,8 @@ func timers(delta: float) -> void:
 	jump_coyote_timer -= delta
 	jump_buffer_timer -= delta
 
-var cooldown = 0
-var hold_time = 0
+var cooldown := 0.0
+var hold_time := 0.0
 func shooting_logic(delta: float) -> void:
 	cooldown -= delta
 	if $Input.is_action_pressed("shoot"):
@@ -201,11 +201,11 @@ func shooting_logic(delta: float) -> void:
 			get_parent().add_child(new_projectile)
 
 			# calculate direction
-			print(direction * max(hold_time * 1000, 1000))
-			new_projectile.linear_velocity = velocity + direction * max(hold_time * 200, 500)
+			print(direction * max(hold_time * 1000.0, 1000))
+			new_projectile.linear_velocity = velocity + direction * max(100, min(hold_time * 1000.0, 500))
 			# random
 			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
-			new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius
+			new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius # make sure we havent set a scale!
 			cooldown = 0.2
 			hold_time = 0
 

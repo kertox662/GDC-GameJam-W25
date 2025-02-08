@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bflk2amke2u0e"]
+[gd_scene load_steps=7 format=3 uid="uid://bflk2amke2u0e"]
 
 [ext_resource type="Script" path="res://game/level/level.gd" id="1_2lpq5"]
 [ext_resource type="Texture2D" uid="uid://b6b6grx5qqoeo" path="res://assets/test_tile.png" id="2_lickk"]
 [ext_resource type="Script" path="res://game/level/spawn_manager.gd" id="3_qs882"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_08s40"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6jn4f"]
 texture = ExtResource("2_lickk")
@@ -10,10 +12,12 @@ texture = ExtResource("2_lickk")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_387s1"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 79
+physics_layer_0/collision_mask = 0
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_08s40")
 sources/0 = SubResource("TileSetAtlasSource_6jn4f")
 
-[node name="Level" type="Node"]
+[node name="Level2" type="Node"]
 script = ExtResource("1_2lpq5")
 
 [node name="ForegroundTileMap" type="TileMapLayer" parent="."]
