@@ -1,6 +1,7 @@
 extends Node
 
 const DEADZONE = 0.5
+const JUST_PRESSED_TICKS = 3
 
 var device: InputDevice
 var actions: Array[String]
@@ -9,9 +10,12 @@ var actionDirections: Dictionary
 var inputMu: Mutex
 
 var actionPressedDict: Dictionary # actionName: String -> bool
-var actionJustPressedDict: Dictionary # actionName: String -> bool
-var actionJustReleasedDict: Dictionary # actionName: String -> bool
+var actionJustPressedDict: Dictionary # actionName: String -> numberOfFramesToBePressed: int
+var actionJustReleasedDict: Dictionary # actionName: String -> numberOfFramesToBePressed: int
 var actionValueDict: Dictionary # actionName: String -> float
+
+func _ready():
+	inputMu = Mutex.new()
 
 func initialize(device: InputDevice, actions: Array[String], actionDirections: Dictionary) -> void:
 	self.device = device
@@ -21,23 +25,31 @@ func initialize(device: InputDevice, actions: Array[String], actionDirections: D
 	actionJustPressedDict = {}
 	actionJustReleasedDict = {}
 	actionValueDict = {}
-	
-	inputMu = Mutex.new()
 
 	for action in actions:
 		actionPressedDict[action] = false
-		actionJustPressedDict[action] = false
-		actionJustReleasedDict[action] = false
+		actionJustPressedDict[action] = 0
+		actionJustReleasedDict[action] = 0
 		actionValueDict[action] = 0
 
 func is_action_pressed(action: String) -> bool:
 	return action in actions and actionPressedDict[action]
 
 func is_action_just_pressed(action: String) -> bool:
-	return action in actions and actionJustPressedDict[action]
+	if action not in action:
+		return false
+	inputMu.lock()
+	var pressed = actionJustPressedDict[action]
+	inputMu.unlock()
+	return pressed > 0
 
 func is_action_just_released(action: String) -> bool:
-	return action in actions and actionJustReleasedDict[action]
+	if action not in action:
+		return false
+	inputMu.lock()
+	var released = actionJustReleasedDict[action]
+	inputMu.unlock()
+	return released > 0
 
 func get_joystick_value(pos_axis_action: String) -> float:
 	var axis = getJoystickAxis(pos_axis_action)
@@ -53,36 +65,37 @@ func update_joystick_pressed() -> void:
 		var prevState = actionPressedDict[action]
 		actionPressedDict[action] = actionState
 		# Check that previous state is different from current state
-		actionJustPressedDict[action] = actionState and not prevState
-		actionJustReleasedDict[action] = (not actionState) and prevState
+		if actionState and not prevState:
+			actionJustPressedDict[action] = JUST_PRESSED_TICKS
+		if (not actionState) and prevState:
+			actionJustReleasedDict[action] = JUST_PRESSED_TICKS
 	inputMu.unlock()
 
 func _input(event: InputEvent) -> void:
+	if not device.isInputEventSameDevice(event):
+			return
 	var event_actions = get_event_action_type(event)
 	inputMu.lock()
 	for event_action in event_actions:
-		if not device.isInputEventSameDevice(event):
-			return
-		
 		if isControllerJoystickEvent(event):
 			actionValueDict[event_action] = event.axis_value
-			return
+			continue
 		
 		if event.is_pressed():
 			actionPressedDict[event_action] = true
-			actionJustPressedDict[event_action] = true
+			actionJustPressedDict[event_action] = JUST_PRESSED_TICKS
 			actionValueDict[event_action] = 1
 		elif event.is_released():
 			actionPressedDict[event_action] = false
-			actionJustReleasedDict[event_action] = true
+			actionJustReleasedDict[event_action] = JUST_PRESSED_TICKS
 			actionValueDict[event_action] = 0
 	inputMu.unlock()
 
 func _process(delta: float) -> void:
 	inputMu.lock()
 	for action in actions:
-		actionJustPressedDict[action] = false
-		actionJustReleasedDict[action] = false
+		actionJustPressedDict[action] = max(0, actionJustPressedDict[action] - 1)
+		actionJustReleasedDict[action] = max(0, actionJustReleasedDict[action] - 1)
 	inputMu.unlock()
 
 func get_event_action_type(event: InputEvent) -> Array:
