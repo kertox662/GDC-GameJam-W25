@@ -48,6 +48,7 @@ func _ready():
 	$Input.initialize(inputDevice, actions, actionDirs)
 
 func _process(delta):
+	update_direction()
 	shooting_logic(delta)
 
 func get_input() -> Dictionary:
@@ -110,6 +111,17 @@ func set_direction(hor_direction) -> void:
 	apply_scale(Vector2(hor_direction * face_direction, 1)) # flip
 	face_direction = hor_direction # remember direction
 
+var direction := Vector2(0, -1)
+func update_direction() -> void:
+	var new_direction := Vector2(0, 0)
+	if useController:
+		new_direction = Vector2($Input.get_joystick_value("move_right"), $Input.get_joystick_value("move_down"))
+	else:
+		var x = int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left))
+		var y = int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up))
+		new_direction = Vector2(x, -y)
+	if not new_direction.is_zero_approx():
+		direction = new_direction
 
 func jump_logic(_delta: float) -> void:
 	# Reset our jump requirements
@@ -168,19 +180,26 @@ func timers(delta: float) -> void:
 	jump_buffer_timer -= delta
 
 var cooldown = 0
+var hold_time = 0
 func shooting_logic(delta: float) -> void:
 	cooldown -= delta
 	if $Input.is_action_pressed("shoot"):
+		hold_time += delta
+	if $Input.is_action_just_released("shoot"):
 		# create projectile
 		if cooldown <= 0:
 			print("shooting!")
 			var new_projectile : Projectile = Globals.projectile.instantiate()
 			get_parent().add_child(new_projectile)
-			var projectile_velocity = Vector2(0, -500)
-			new_projectile.linear_velocity = velocity + projectile_velocity
+
+			# calculate direction
+			print(direction * max(hold_time * 1000, 1000))
+			new_projectile.linear_velocity = velocity + direction * max(hold_time * 200, 500)
+			# random
 			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
-			new_projectile.global_position = global_position + projectile_velocity.normalized() * $bullet_spawn.shape.radius
+			new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius
 			cooldown = 0.2
+			hold_time = 0
 
 
 func _on_hurtbox_body_entered(body):
