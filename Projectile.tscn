@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://452bpeosmtv6" path="res://icon.svg" id="2_diynb"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eeo3r"]
-bounce = 1.0
+bounce = 0.7
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4xqrr"]
 height = 20.0

@@ -46,6 +46,7 @@ var actionDirs: Dictionary = {
 func _ready():
 	var inputDevice = InputDevice.new(deviceId, useController)
 	$Input.initialize(inputDevice, actions, actionDirs)
+	$AnimatedSprite2D.play("idle")
 
 func _process(delta):
 	update_direction()
@@ -84,8 +85,10 @@ func x_movement(delta: float) -> void:
 	# Stop if we're not doing movement inputs.
 	if x_dir == 0:
 		velocity.x = Vector2(velocity.x, 0).move_toward(Vector2(0,0), deceleration * delta).x
+		$AnimatedSprite2D.play("idle")
 		return
 	
+	$AnimatedSprite2D.play("running")
 	# If we are doing movement inputs and above max speed, don't accelerate nor decelerate
 	# Except if we are turning
 	# (This keeps our momentum gained from outside or slopes)
@@ -119,7 +122,7 @@ func update_direction() -> void:
 	else:
 		var x = int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left))
 		var y = int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up))
-		new_direction = Vector2(x, -y)
+		new_direction = Vector2(x, y)
 	if not new_direction.is_zero_approx():
 		direction = new_direction
 
