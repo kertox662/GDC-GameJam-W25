@@ -1,6 +1,5 @@
 extends Node
 
-const NON_ACTION = "-"
 const DEADZONE = 0.5
 
 var device: InputDevice
@@ -53,38 +52,41 @@ func update_joystick_pressed() -> void:
 		actionJustReleasedDict[action] = (not actionState) and prevState
 
 func _input(event: InputEvent) -> void:
-	var event_action = get_event_action_type(event)
-	if event_action == NON_ACTION or not device.isInputEventSameDevice(event):
-		return
-	
-	if isControllerJoystickEvent(event):
-		actionValueDict[event_action] = event.axis_value
-		return
-	
-	if event.is_pressed():
-		actionPressedDict[event_action] = true
-		actionJustPressedDict[event_action] = true
-		actionValueDict[event_action] = 1
-	elif event.is_released():
-		actionPressedDict[event_action] = false
-		actionJustReleasedDict[event_action] = true
-		actionValueDict[event_action] = 0
-	
+	var event_actions = get_event_action_type(event)
+	for event_action in event_actions:
+		if not device.isInputEventSameDevice(event):
+			return
+		
+		if isControllerJoystickEvent(event):
+			actionValueDict[event_action] = event.axis_value
+			return
+		
+		if event.is_pressed():
+			actionPressedDict[event_action] = true
+			actionJustPressedDict[event_action] = true
+			actionValueDict[event_action] = 1
+		elif event.is_released():
+			actionPressedDict[event_action] = false
+			actionJustReleasedDict[event_action] = true
+			actionValueDict[event_action] = 0
+
 func _process(delta: float) -> void:
 	for action in actions:
 		actionJustPressedDict[action] = false
 		actionJustReleasedDict[action] = false
 
-func get_event_action_type(event: InputEvent) -> String:
+func get_event_action_type(event: InputEvent) -> Array:
+	var ret = []
 	for action in actions:
 		if event.is_action(action):
 			if not isControllerJoystickEvent(event):
-				return action
+				ret.append(action)
+				continue
 			var axis = getJoystickAxis(action)
 			var axis_val = Input.get_joy_axis(device.deviceId, axis)
 			if axis_val * actionDirections[action] > DEADZONE: # flip sign if negative
-				return action
-	return NON_ACTION
+				ret.append(action)
+	return ret
 
 func isControllerJoystickEvent(event: InputEvent) -> bool:
 	return event.is_class("InputEventJoypadMotion")
