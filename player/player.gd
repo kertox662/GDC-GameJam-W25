@@ -202,7 +202,7 @@ func shooting_logic(delta: float) -> void:
 
 			# calculate direction
 			print(direction * max(hold_time * 1000.0, 1000))
-			new_projectile.linear_velocity = velocity + direction * max(100, min(hold_time * 1000.0, 500))
+			new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction * max(100, min(hold_time * 1000.0, 500))
 			# random
 			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
 			new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius # make sure we havent set a scale!
