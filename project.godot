@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GDC-GameJam-W25"
-run/main_scene="res://Game.tscn"
+run/main_scene="res://game/match.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
@@ -23,6 +23,7 @@ Globals="*res://Globals.tscn"
 
 window/size/viewport_width=640
 window/size/viewport_height=320
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
