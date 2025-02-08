@@ -6,6 +6,8 @@ var device: InputDevice
 var actions: Array[String]
 var actionDirections: Dictionary
 
+var inputMu: Mutex
+
 var actionPressedDict: Dictionary # actionName: String -> bool
 var actionJustPressedDict: Dictionary # actionName: String -> bool
 var actionJustReleasedDict: Dictionary # actionName: String -> bool
@@ -19,6 +21,8 @@ func initialize(device: InputDevice, actions: Array[String], actionDirections: D
 	actionJustPressedDict = {}
 	actionJustReleasedDict = {}
 	actionValueDict = {}
+	
+	inputMu = Mutex.new()
 
 	for action in actions:
 		actionPressedDict[action] = false
@@ -42,6 +46,7 @@ func get_joystick_value(pos_axis_action: String) -> float:
 	return axis_value if abs(axis_value) >= DEADZONE else 0
 
 func update_joystick_pressed() -> void:
+	inputMu.lock()
 	for action in actionDirections:
 		# actionDirections will adjust for the negative and positive directions.
 		var actionState = get_joystick_value(action) * actionDirections[action] >= DEADZONE
@@ -50,9 +55,11 @@ func update_joystick_pressed() -> void:
 		# Check that previous state is different from current state
 		actionJustPressedDict[action] = actionState and not prevState
 		actionJustReleasedDict[action] = (not actionState) and prevState
+	inputMu.unlock()
 
 func _input(event: InputEvent) -> void:
 	var event_actions = get_event_action_type(event)
+	inputMu.lock()
 	for event_action in event_actions:
 		if not device.isInputEventSameDevice(event):
 			return
@@ -69,11 +76,14 @@ func _input(event: InputEvent) -> void:
 			actionPressedDict[event_action] = false
 			actionJustReleasedDict[event_action] = true
 			actionValueDict[event_action] = 0
+	inputMu.unlock()
 
 func _process(delta: float) -> void:
+	inputMu.lock()
 	for action in actions:
 		actionJustPressedDict[action] = false
 		actionJustReleasedDict[action] = false
+	inputMu.unlock()
 
 func get_event_action_type(event: InputEvent) -> Array:
 	var ret = []
