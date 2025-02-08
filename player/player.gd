@@ -1,4 +1,7 @@
 extends CharacterBody2D
+class_name Player
+
+signal killed(CharacterBody2D)
 
 var face_direction := 1
 var x_dir := 1
@@ -12,8 +15,8 @@ var gravity_acceleration : float = 3840
 var gravity_max : float = 1020
 var gravity_multiplier_when_small : float = 0.3
 
-var jump_height: float = 200
-var jump_force : float = 200
+var jump_height: float = 50
+var jump_force : float = 100
 var jump_cut : float = 0.25
 var jump_gravity_max : float = 500
 var jump_hang_treshold : float = 2.0
@@ -209,3 +212,5 @@ func shooting_logic(delta: float) -> void:
 
 func _on_hurtbox_body_entered(body):
 	body.queue_free()
+	killed.emit(self)
+	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
