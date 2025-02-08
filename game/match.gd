@@ -83,7 +83,7 @@ func playerDeath(playerDied) -> void:
 			break
 	init_match()
 		
-var count = 2000
+var count = 0
 func _input(event: InputEvent) -> void:
 	if count > 0:
 		get_viewport().set_input_as_handled()
