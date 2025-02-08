@@ -6,17 +6,17 @@ signal killed(CharacterBody2D)
 var face_direction := 1
 var x_dir := 1
 
-var max_speed: float = 150	
-var acceleration: float = 2400
-var turning_acceleration : float = 9600
+var max_speed: float = 200
+var acceleration: float = 2000
+var turning_acceleration : float = 6400
 var deceleration: float = 3200
 
 var gravity_acceleration : float = 2000
 var gravity_max : float = 600
 var gravity_multiplier_when_small : float = 0.3
 
-var jump_height: float = 50
-var jump_force : float = 100
+var jump_height: float = 100
+var jump_force : float = 80
 var jump_cut : float = 0.25
 var jump_gravity_max : float = 500
 var jump_hang_treshold : float = 2.0

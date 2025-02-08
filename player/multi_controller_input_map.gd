@@ -71,7 +71,7 @@ func update_joystick_pressed() -> void:
 			actionJustReleasedDict[action] = JUST_PRESSED_TICKS
 	inputMu.unlock()
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not device.isInputEventSameDevice(event):
 			return
 	if event.is_class("InputEventKey") and event.echo:
