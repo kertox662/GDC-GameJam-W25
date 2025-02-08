@@ -64,9 +64,11 @@ func _input(event: InputEvent) -> void:
 	if event.is_pressed():
 		actionPressedDict[event_action] = true
 		actionJustPressedDict[event_action] = true
+		actionJustReleasedDict[event_action] = false
 		actionValueDict[event_action] = 1
 	elif event.is_released():
 		actionPressedDict[event_action] = false
+		actionJustPressedDict[event_action] = false
 		actionJustReleasedDict[event_action] = true
 		actionValueDict[event_action] = 0
 	
