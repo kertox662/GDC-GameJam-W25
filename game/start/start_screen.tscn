@@ -77,10 +77,10 @@ layout_mode = 2
 [node name="Devs" type="Label" parent="Credits/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "Developers:
-Saaz Ramsubhag (zanada)
-David Hu
-Isabelle Cai
-Misha Melnyk (Kertox662)
+Saaz Ramsubhag (zanada) - Programming
+David Hu - Programming
+Isabelle Cai - Art & Animation
+Misha Melnyk (Kertox662)  - Programming
 
 "
 

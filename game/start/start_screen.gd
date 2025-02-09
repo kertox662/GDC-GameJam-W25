@@ -11,6 +11,8 @@ func _on_quit_button_down() -> void:
 
 func _on_credits_button_down() -> void:
 	$Credits.visible = !$Credits.visible
+	$Credits/CenterContainer/VBoxContainer/BackToStart.grab_focus()
 
 func _on_back_to_start_button_down() -> void:
 	$Credits.visible = !$Credits.visible
+	$ContentMargins/ContentVbox/ButtonHBox/Start.grab_focus()

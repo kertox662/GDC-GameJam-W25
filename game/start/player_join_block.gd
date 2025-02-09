@@ -32,3 +32,9 @@ func get_player_data():
 	var dev = inputDevice.as_tuple()
 	dev.push_back($MarginContainer/VBoxContainer/TextureRect.texture)
 	return dev
+	
+func show_indicator():
+	$Indicator.show()
+	
+func hide_indicator():
+	$Indicator.hide()

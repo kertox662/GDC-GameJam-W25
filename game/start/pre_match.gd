@@ -9,9 +9,16 @@ var winLabel : Label
 var winGoal := 3
 var players_joined := 0
 
+var joinBlocks = []
+var lastOpen = 0
+
 func _ready() -> void:
 	winLabel = $MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer/WinLabel
 	winLabel.text = str(winGoal)
+	
+	for child in $MarginContainer/VBoxContainer/PlayerJoinBlocks.get_children():
+		joinBlocks.append(child)
+	joinBlocks[lastOpen].show_indicator()
 
 func _input(event: InputEvent) -> void:
 	var device = InputDevice.fromInputEvent(event)
@@ -39,6 +46,18 @@ func handle_player_join(device: InputDevice):
 			$PlayerJoin.play(0)
 			break
 		playerInd += 1
+		
+	# spaghetti code to set indicator
+	var indicator_set := false
+	for i in range(joinBlocks.size()):
+		if joinBlocks[i].inputDevice == null:
+			if !indicator_set:
+				joinBlocks[i].show_indicator()
+				indicator_set = true
+			else:
+				joinBlocks[i].hide_indicator()
+		else:
+			joinBlocks[i].hide_indicator()
 
 func handle_player_leave(device: InputDevice):
 	for child in $MarginContainer/VBoxContainer/PlayerJoinBlocks.get_children():
@@ -49,6 +68,18 @@ func handle_player_leave(device: InputDevice):
 				$MarginContainer/VBoxContainer/MarginContainer/BottomRow/StartButton.disabled = true
 			$PlayerLeave.play(0)
 			break
+			
+	# spaghetti code to set indicator
+	var indicator_set := false
+	for i in range(joinBlocks.size()):
+		if joinBlocks[i].inputDevice == null:
+			if !indicator_set:
+				joinBlocks[i].show_indicator()
+				indicator_set = true
+			else:
+				joinBlocks[i].hide_indicator()
+		else:
+			joinBlocks[i].hide_indicator()
 
 func handle_match_start():
 	var players = []

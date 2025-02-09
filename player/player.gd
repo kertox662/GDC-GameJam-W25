@@ -24,8 +24,8 @@ var jump_height: float = 100
 var jump_force : float = 90
 var jump_cut : float = 0.25
 var jump_gravity_max : float = 500
-var jump_hang_treshold : float = 2.0
-var jump_hang_gravity_mult : float = 0.1
+var jump_hang_treshold : float = 1.0
+var jump_hang_gravity_mult : float = 0.4
 
 var jump_coyote : float = 0.08
 var jump_buffer : float = 0.1
