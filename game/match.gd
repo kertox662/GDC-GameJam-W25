@@ -3,6 +3,7 @@ extends Node2D
 # Where the game is played, holds the level and players
 
 var playerScene : PackedScene = preload("res://player/player.tscn")
+@onready var HUD = $MatchHUD
 
 const TOTAL_LEVELS = 2
 
@@ -23,6 +24,9 @@ var player_animations = [
 	preload("res://player/green_player_sprites.tres"),
 	preload("res://player/yellow_player_sprites.tres"),
 ]
+var blockPlayerInput := false
+
+var matchState = "INITIALIZING"
 
 func initialize_game(configs:Array, win_goal:int) -> void:
 	playerNum = configs.size()
@@ -32,6 +36,7 @@ func initialize_game(configs:Array, win_goal:int) -> void:
 	winGoal = win_goal
 	
 	init_match()
+	start_match()
 
 func init_match(level_index : int = -1) -> void:
 	clear_players()
@@ -62,6 +67,18 @@ func init_match(level_index : int = -1) -> void:
 		player.killed.connect(playerDeath)
 		playerList.push_back(player)
 		
+func start_match():
+	blockPlayerInput = true
+	
+	matchState = "STARTING"
+	HUD.show_countdown()
+	$StartTimer.start()
+	await $StartTimer.timeout
+	
+	matchState = "PLAYING"
+	HUD.hide_countdown()
+	blockPlayerInput = false
+		
 func clear_players():
 	for player in playerList:
 		if player != null:
@@ -84,19 +101,21 @@ func playerDeath(playerDied) -> void:
 	print(playerList)
 	if alivePlayers != 1:
 		return
-	print("hey")
 	for i in range(playerNum):
 		if playerList[i] != null:
 			playerPoints[i] += 1
 			break
-	init_match()
+			
+	blockPlayerInput = true
+	HUD.show_scores(playerPoints)
+	#init_match()
+	#start_match()
 		
 var count = 0
 func _input(event: InputEvent) -> void:
-	if count > 0:
+	if blockPlayerInput:
 		get_viewport().set_input_as_handled()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+		
 func _process(delta: float) -> void:
-	count -=1
-	pass
+	if matchState == "STARTING":
+		HUD.set_countdown(int(ceil($StartTimer.time_left)))
