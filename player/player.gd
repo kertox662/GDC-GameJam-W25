@@ -235,5 +235,5 @@ func parry_logic(delta: float) -> void:
 
 func _on_hurtbox_body_entered(body):
 	body.queue_free()
-	#killed.emit(self)
+	killed.emit(self)
 	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
