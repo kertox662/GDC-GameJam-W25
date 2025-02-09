@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://dyde6bk82ph4f"]
+[gd_scene load_steps=5 format=3 uid="uid://dyde6bk82ph4f"]
 
 [ext_resource type="Script" path="res://game/start/start_screen.gd" id="1_f8f3u"]
 [ext_resource type="Texture2D" uid="uid://cub1jj61rbdt" path="res://assets/bg og.PNG" id="2_35den"]
 [ext_resource type="Texture2D" uid="uid://brvflhw348032" path="res://assets/splash out logo.PNG" id="3_2133f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfq31"]
+bg_color = Color(0.16, 0.16, 0.16, 0.831373)
 
 [node name="StartScreen" type="Control"]
 layout_mode = 3
@@ -39,9 +42,6 @@ size_flags_vertical = 4
 layout_mode = 2
 texture = ExtResource("3_2133f")
 
-[node name="HSeparator" type="HSeparator" parent="ContentMargins/ContentVbox"]
-layout_mode = 2
-
 [node name="ButtonHBox" type="HBoxContainer" parent="ContentMargins/ContentVbox"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -50,9 +50,50 @@ size_flags_horizontal = 4
 layout_mode = 2
 text = "Start"
 
+[node name="Credits" type="Button" parent="ContentMargins/ContentVbox/ButtonHBox"]
+layout_mode = 2
+text = "Credits"
+
 [node name="Quit" type="Button" parent="ContentMargins/ContentVbox/ButtonHBox"]
 layout_mode = 2
 text = "Quit"
 
+[node name="Credits" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wfq31")
+
+[node name="CenterContainer" type="CenterContainer" parent="Credits"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/CenterContainer"]
+layout_mode = 2
+
+[node name="Devs" type="Label" parent="Credits/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Developers:
+Saaz Ramsubhag (zanada)
+David Hu
+Isabelle Cai
+Misha Melnyk (Kertox662)
+
+"
+
+[node name="Assets" type="Label" parent="Credits/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Assets Used:
+Music by M'magic Bhomb - ‎@mmagicbhomb"
+
+[node name="BackToStart" type="Button" parent="Credits/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
 [connection signal="button_down" from="ContentMargins/ContentVbox/ButtonHBox/Start" to="." method="_on_start_button_down"]
+[connection signal="button_down" from="ContentMargins/ContentVbox/ButtonHBox/Credits" to="." method="_on_credits_button_down"]
 [connection signal="button_down" from="ContentMargins/ContentVbox/ButtonHBox/Quit" to="." method="_on_quit_button_down"]
+[connection signal="button_down" from="Credits/CenterContainer/VBoxContainer/BackToStart" to="." method="_on_back_to_start_button_down"]
