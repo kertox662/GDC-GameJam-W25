@@ -17,6 +17,9 @@ func _ready():
 	DisplayServer.window_set_size(window_size)
 	DisplayServer.window_set_position(screen_size/2 - window_size/2)
 
+func changeScene(packed : PackedScene) -> Error :
+	return get_tree().change_scene_to_packed(packed)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

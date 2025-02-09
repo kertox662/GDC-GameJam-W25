@@ -18,7 +18,14 @@ func show_scores(scores : Array[int]):
 	$Scores.text = scoreline
 	
 func hide_scores():
-	$Scores.hide()
+	$Scores.hide()	
+	
+func show_winner(winner_num: int) -> void:
+	$Winner.show()
+	$Winner.text = "Player " + str(winner_num) + " wins!"
+	
+func hide_winner() -> void:
+	$Winner.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

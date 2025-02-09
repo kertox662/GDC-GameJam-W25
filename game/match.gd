@@ -3,6 +3,7 @@ extends Node2D
 # Where the game is played, holds the level and players
 
 var playerScene : PackedScene = preload("res://player/player.tscn")
+var preMatchScene : PackedScene = load("res://game/start/pre_match.tscn")
 var HUD
 
 const TOTAL_LEVELS = 2
@@ -105,19 +106,34 @@ func playerDeath(playerDied) -> void:
 		
 	# only one player standing
 	
+	var winner := 0
 	# give player point, and make invincible
 	for i in range(playerNum):
 		if playerList[i] != null:
 			playerList[i].invincible = true
 			playerPoints[i] += 1
+			if playerPoints[i] >= winGoal:
+				winner = i + 1
+				
 			break
-			
-	matchState = "MATCHOVER"
+	
+	if winner > 0:
+		matchState = "GAMEOVER"
+		HUD.show_winner(winner)
+	else:
+		matchState = "MATCHOVER"
+		
 	HUD.show_scores(playerPoints)
 	$NextMatchTimer.start()
 	await $NextMatchTimer.timeout
-	HUD.hide_scores()
 	
+	if winner > 0:
+		var error := get_tree().change_scene_to_packed(preMatchScene)
+		print("ERROR: " + str(error))
+		queue_free()
+		return
+	
+	HUD.hide_scores()
 	get_tree().call_group("projectiles", "queue_free")
 	init_match()
 	start_match()
