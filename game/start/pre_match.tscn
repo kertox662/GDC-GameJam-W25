@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkeefijbsnaf8"]
+[gd_scene load_steps=18 format=3 uid="uid://dkeefijbsnaf8"]
 
 [ext_resource type="Script" path="res://game/start/pre_match.gd" id="1_guk6k"]
 [ext_resource type="PackedScene" uid="uid://y16x30x1wsop" path="res://game/start/player_join_block.tscn" id="1_nq4ow"]
@@ -9,6 +9,40 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4w35"]
 bg_color = Color(0.908657, 0.826105, 0.769626, 1)
+
+[sub_resource type="InputEventAction" id="InputEventAction_1ffd2"]
+action = &"ui_left"
+
+[sub_resource type="Shortcut" id="Shortcut_ky28o"]
+events = [SubResource("InputEventAction_1ffd2")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_w6s5i"]
+action = &"ui_right"
+
+[sub_resource type="InputEventJoypadMotion" id="InputEventJoypadMotion_p01kf"]
+axis_value = -1.0
+
+[sub_resource type="Shortcut" id="Shortcut_dx451"]
+events = [SubResource("InputEventAction_w6s5i"), SubResource("InputEventJoypadMotion_p01kf")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_nch5s"]
+action = &"ui_cancel"
+
+[sub_resource type="Shortcut" id="Shortcut_dpw0j"]
+events = [SubResource("InputEventAction_nch5s")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kw3k2"]
+bg_color = Color(0.95, 0.429875, 0.2565, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="InputEventAction" id="InputEventAction_8b5fm"]
+action = &"start_game"
+
+[sub_resource type="Shortcut" id="Shortcut_s11ri"]
+events = [SubResource("InputEventAction_8b5fm")]
 
 [node name="PreMatch" type="PanelContainer"]
 texture_filter = 1
@@ -31,6 +65,7 @@ theme_override_constants/margin_bottom = 15
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
+theme_override_constants/separation = 13
 
 [node name="PlayerJoinBlocks" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
@@ -69,6 +104,40 @@ alignment = 1
 custom_minimum_size = Vector2(200, 110)
 layout_mode = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MiddleRow/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.0
+offset_top = -13.0
+offset_right = 27.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="LeftButton" type="Button" parent="MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+shortcut = SubResource("Shortcut_ky28o")
+text = "<"
+
+[node name="WinLabel" type="Label" parent="MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer"]
+custom_minimum_size = Vector2(30.785, 0)
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="RightButton" type="Button" parent="MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+shortcut = SubResource("Shortcut_dx451")
+text = ">"
+
 [node name="Message" type="Label" parent="MarginContainer/VBoxContainer/MiddleRow/Panel"]
 layout_mode = 1
 anchors_preset = 5
@@ -81,28 +150,33 @@ offset_bottom = 35.0
 grow_horizontal = 2
 text = "Wins to Victory"
 
-[node name="WinLabel" type="Label" parent="MarginContainer/VBoxContainer/MiddleRow/Panel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -19.0
-offset_top = -2.0
-offset_right = 21.0
-offset_bottom = 21.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "1"
-horizontal_alignment = 1
-
-[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/margin_right = 89
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/BottomRow"]
+[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 55
+alignment = 1
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/BottomRow"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 11
+shortcut = SubResource("Shortcut_dpw0j")
+text = "Back"
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/BottomRow"]
 custom_minimum_size = Vector2(100, 40)
 layout_mode = 2
-text = "Back
-"
+theme_override_styles/normal = SubResource("StyleBoxFlat_kw3k2")
+disabled = true
+shortcut = SubResource("Shortcut_s11ri")
+text = "Start"
+
+[connection signal="button_down" from="MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer/LeftButton" to="." method="_on_left_button_button_down"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer/LeftButton" to="." method="_on_left_button_pressed"]
+[connection signal="button_down" from="MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer/RightButton" to="." method="_on_right_button_button_down"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MiddleRow/Panel/HBoxContainer/RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/BottomRow/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/BottomRow/StartButton" to="." method="_on_start_button_pressed"]
