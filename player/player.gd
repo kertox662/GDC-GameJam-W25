@@ -35,6 +35,7 @@ var left = "move_left"
 var right = "move_right"
 var shoot = "shoot"
 var jump = "jump"
+var ammo = 1
 var actions: Array[String] = [up, down, left, right, shoot, jump]
 var actionDirs: Dictionary = {
 	up: -1,
@@ -189,7 +190,30 @@ func timers(delta: float) -> void:
 
 var cooldown := 0.0
 var hold_time := 0.0
+
 func shooting_logic(delta: float) -> void:
+	cooldown -= delta
+	if $Input.is_action_pressed("shoot"):
+		hold_time += delta
+	if $Input.is_action_just_released("shoot"):
+		# create projectile
+		if cooldown <= 0:
+			print("shooting!")
+			var new_projectile : Projectile = Globals.projectile.instantiate()
+			get_parent().add_child(new_projectile)
+
+			for i in range(1):
+				# calculate direction
+				print(direction * max(hold_time * 1000.0, 1000))
+				new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction * max(150, min(hold_time * 1000.0, 500))
+				# random
+				new_projectile.apply_central_force(Vector2(randi_range(-200, 200), randi_range(-200, 200)))
+				new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius # make sure we havent set a scale!
+			cooldown = 0
+			hold_time = 0
+			ammo -= 1
+
+func parry_logic(delta: float) -> void:
 	cooldown -= delta
 	if $Input.is_action_pressed("shoot"):
 		hold_time += delta
@@ -209,8 +233,7 @@ func shooting_logic(delta: float) -> void:
 			cooldown = 0.2
 			hold_time = 0
 
-
 func _on_hurtbox_body_entered(body):
 	body.queue_free()
-	killed.emit(self)
+	#killed.emit(self)
 	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
