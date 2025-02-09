@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dqjj68bovtoc7"]
+[gd_scene load_steps=4 format=3 uid="uid://dqjj68bovtoc7"]
 
 [ext_resource type="Script" path="res://game/match.gd" id="1_3gfcf"]
 [ext_resource type="Script" path="res://game/match_hud.gd" id="2_nnooc"]
+[ext_resource type="AudioStream" uid="uid://deqja0chxrj4s" path="res://assets/win.mp3" id="3_65ehp"]
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_3gfcf")
@@ -66,3 +67,6 @@ vertical_alignment = 1
 [node name="NextMatchTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="win_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_65ehp")

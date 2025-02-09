@@ -184,6 +184,7 @@ func jump_logic(_delta: float) -> void:
 
 	if get_input()["just_jump"]:
 		jump_buffer_timer = jump_buffer
+		$jump_audio.play()
 	
 	# Jump if grounded, there is jump input, and we aren't jumping already
 	if jump_coyote_timer > 0 and jump_buffer_timer > 0 and not is_jumping:

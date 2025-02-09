@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dq1l158tvu60m"]
+[gd_scene load_steps=5 format=3 uid="uid://dq1l158tvu60m"]
 
 [ext_resource type="Texture2D" uid="uid://c6avrlhbu5uqr" path="res://assets/death.PNG" id="1_uvp3s"]
 [ext_resource type="Texture2D" uid="uid://c4v5qashy0iov" path="res://assets/effects/smoke.png" id="2_0l0y2"]
+[ext_resource type="AudioStream" uid="uid://b5k4vpjoag0e3" path="res://assets/death.wav" id="3_saqll"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_alumb"]
 size = Vector2(17, 3)
@@ -35,3 +36,7 @@ color = Color(1, 1, 1, 0.180392)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 14.5)
 shape = SubResource("RectangleShape2D_alumb")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_saqll")
+autoplay = true

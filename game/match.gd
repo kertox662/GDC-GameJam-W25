@@ -136,6 +136,7 @@ func playerDeath(playerDied) -> void:
 		matchState = "MATCHOVER"
 		
 	HUD.show_scores(playerPoints)
+	$win_sound.play()
 	$NextMatchTimer.start()
 	await $NextMatchTimer.timeout
 	if summary:
