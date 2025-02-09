@@ -129,7 +129,6 @@ func playerDeath(playerDied) -> void:
 	
 	if winner > 0:
 		var error := get_tree().change_scene_to_packed(preMatchScene)
-		print("ERROR: " + str(error))
 		queue_free()
 		return
 	
