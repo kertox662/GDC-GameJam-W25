@@ -120,7 +120,7 @@ func playerDeath(playerDied) -> void:
 		if playerList[i] != null:
 			playerList[i].invincible = true
 			summary = summaryScene.instantiate()
-			summary.initialize_and_tween(playerConfigs, playerPoints, i, winGoal, get_tree())
+			summary.initialize_and_tween(playerConfigs, playerPoints, i+1, winGoal, get_tree())
 			HUD.add_child(summary)
 			playerPoints[i] += 1
 			if playerPoints[i] >= winGoal:
