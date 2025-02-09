@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://projectile.gd" id="1_x35ce"]
 [ext_resource type="Texture2D" uid="uid://cml5kcl80my8t" path="res://assets/droplet new.PNG" id="2_0ec16"]
-[ext_resource type="AudioStream" uid="uid://ora7wjhfkid5" path="res://assets/sounds/metal-pole.mp3" id="3_ttku8"]
+[ext_resource type="AudioStream" uid="uid://bwkmj7te2bl3r" path="res://assets/sounds/splash_02.ogg" id="3_2np46"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eeo3r"]
 friction = 0.0
@@ -29,8 +29,8 @@ texture = ExtResource("2_0ec16")
 offset = Vector2(0, -2.19)
 
 [node name="BounceSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_ttku8")
-volume_db = -45.0
+stream = ExtResource("3_2np46")
+volume_db = -12.0
 max_polyphony = 1000
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
