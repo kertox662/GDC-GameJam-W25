@@ -2,13 +2,15 @@ extends HBoxContainer
 
 const active_colour = Color(1,1,1)
 const inactive_colour = Color(0.2,0.2,0.2)
-const TWEEN_TIME = 0.1
+const TWEEN_TIME = 1
 
 func set_num_visible(n: int) -> void:
 	var ind = 0
 	for icon in $WinSummaries.get_children():
-		if ind < n:
+		if ind >= n:
 			icon.visible = false
+		else:
+			icon.visible = true
 		ind += 1
 
 func set_num_active(n: int) -> void:
