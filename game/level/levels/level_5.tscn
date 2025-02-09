@@ -9,7 +9,7 @@ size = Vector2(20, 62)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wcu7d"]
 size = Vector2(20, 60)
 
-[node name="Level" instance=ExtResource("1_b6atb")]
+[node name="Level3" instance=ExtResource("1_b6atb")]
 
 [node name="SteamVents" type="Node" parent="." index="1"]
 

@@ -4,6 +4,7 @@ extends Node2D
 
 var playerScene : PackedScene = preload("res://player/player.tscn")
 var preMatchScene : PackedScene = load("res://game/start/pre_match.tscn")
+var summaryScene: PackedScene = preload("res://game/round_summary.tscn")
 var HUD
 
 const TOTAL_LEVELS = 5
@@ -111,11 +112,16 @@ func playerDeath(playerDied) -> void:
 		
 	# only one player standing
 	
+	var summary = null
+	
 	var winner := 0
 	# give player point, and make invincible
 	for i in range(playerNum):
 		if playerList[i] != null:
 			playerList[i].invincible = true
+			summary = summaryScene.instantiate()
+			summary.initialize_and_tween(playerConfigs, playerPoints, i, winGoal, get_tree())
+			HUD.add_child(summary)
 			playerPoints[i] += 1
 			if playerPoints[i] >= winGoal:
 				winner = i + 1
@@ -124,13 +130,16 @@ func playerDeath(playerDied) -> void:
 	
 	if winner > 0:
 		matchState = "GAMEOVER"
-		HUD.show_winner(winner)
+		#HUD.show_winner(winner)
+		summary.set_winner(winner - 1)
 	else:
 		matchState = "MATCHOVER"
 		
 	HUD.show_scores(playerPoints)
 	$NextMatchTimer.start()
 	await $NextMatchTimer.timeout
+	if summary:
+		summary.queue_free()
 	
 	if winner > 0:
 		var error := get_tree().change_scene_to_packed(preMatchScene)

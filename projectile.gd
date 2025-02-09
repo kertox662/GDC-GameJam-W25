@@ -22,5 +22,6 @@ func _process(delta):
 func _on_body_entered(body):
 	if body.get_class() == "TileMapLayer":
 		bounces -= 1
+		$BounceSound.play(0)
 		if bounces == 0:
 			queue_free()

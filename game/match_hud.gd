@@ -11,6 +11,7 @@ func set_countdown(t : int):
 	$CountLabel.text = str(t)
 	
 func show_scores(scores : Array[int]):
+	return
 	var scoreline = ""
 	for i in range(scores.size()):
 		scoreline += "P" + str(i+1) + ": " + str(scores[i]) + " "
