@@ -24,33 +24,85 @@ size_flags_vertical = 6
 theme_override_styles/panel = SubResource("StyleBoxFlat_f4w35")
 script = ExtResource("1_guk6k")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 
-[node name="PlayerJoinBlocks" type="HBoxContainer" parent="VBoxContainer"]
+[node name="PlayerJoinBlocks" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_direction = 2
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 6
 alignment = 1
 
-[node name="PlayerJoinBlock" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+[node name="PlayerJoinBlock" parent="MarginContainer/VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
 layout_mode = 2
 playerIcon = ExtResource("3_ewj4a")
 blockColor = Color(0.72, 0.348, 0.2736, 1)
 
-[node name="PlayerJoinBlock2" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+[node name="PlayerJoinBlock2" parent="MarginContainer/VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
 layout_mode = 2
 playerIcon = ExtResource("4_yffdk")
 blockColor = Color(0.2232, 0.58752, 0.72, 1)
 
-[node name="PlayerJoinBlock3" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+[node name="PlayerJoinBlock3" parent="MarginContainer/VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
 layout_mode = 2
 playerIcon = ExtResource("5_037k0")
 blockColor = Color(0.24, 0.75, 0.5715, 1)
 
-[node name="PlayerJoinBlock4" parent="VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
+[node name="PlayerJoinBlock4" parent="MarginContainer/VBoxContainer/PlayerJoinBlocks" instance=ExtResource("1_nq4ow")]
 layout_mode = 2
 playerIcon = ExtResource("6_4tx6m")
 blockColor = Color(0.76, 0.712373, 0.4028, 1)
+
+[node name="MiddleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/MiddleRow"]
+custom_minimum_size = Vector2(200, 110)
+layout_mode = 2
+
+[node name="Message" type="Label" parent="MarginContainer/VBoxContainer/MiddleRow/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -58.0
+offset_top = 12.0
+offset_right = 58.0
+offset_bottom = 35.0
+grow_horizontal = 2
+text = "Wins to Victory"
+
+[node name="WinLabel" type="Label" parent="MarginContainer/VBoxContainer/MiddleRow/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.0
+offset_top = -2.0
+offset_right = 21.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="BottomRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/BottomRow"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "Back
+"
