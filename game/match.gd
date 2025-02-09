@@ -43,7 +43,7 @@ func init_match(level_index : int = -1) -> void:
 	
 	var new_level_index
 	if level_index == -1:
-		new_level_index = randi_range(1, TOTAL_LEVELS)
+		new_level_index = randi_range(1, 1)
 	else: new_level_index = level_index
 	
 	alivePlayers = playerNum

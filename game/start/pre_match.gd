@@ -46,8 +46,8 @@ func handle_match_start():
 			data.push_back(ind)
 			players.push_back(data)
 		ind += 1
-	if players.size() < 2:
-		return
+	#if players.size() < 2:
+		#return
 	var matchInst = matchScene.instantiate()
 	matchInst.initialize_game(players, winGoal)
 	get_tree().root.add_child(matchInst)

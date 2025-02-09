@@ -13,6 +13,8 @@ position = Vector2(44, 312)
 
 [node name="player" parent="." instance=ExtResource("1_e8ota")]
 position = Vector2(50, -59)
+deviceId = 0
+useController = false
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 143
@@ -42,6 +44,7 @@ shape = SubResource("RectangleShape2D_yb1y7")
 position = Vector2(279, -50)
 collision_layer = 2
 collision_mask = 2
+deviceId = 0
 useController = true
 
 [node name="Player2" parent="." instance=ExtResource("1_e8ota")]
