@@ -151,6 +151,7 @@ func playerDeath(playerDied) -> void:
 	get_tree().call_group("projectiles", "queue_free")
 	get_tree().call_group("corpses", "queue_free")
 	
+	get_tree().call_group("projectiles", "queue_free")
 	init_match()
 	start_match()
 		
