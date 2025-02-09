@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dyde6bk82ph4f"]
+[gd_scene load_steps=4 format=3 uid="uid://dyde6bk82ph4f"]
 
 [ext_resource type="Script" path="res://game/start/start_screen.gd" id="1_f8f3u"]
+[ext_resource type="Texture2D" uid="uid://cub1jj61rbdt" path="res://assets/bg og.PNG" id="2_35den"]
+[ext_resource type="Texture2D" uid="uid://brvflhw348032" path="res://assets/splash out logo.PNG" id="3_2133f"]
 
 [node name="StartScreen" type="Control"]
 layout_mode = 3
@@ -11,14 +13,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f8f3u")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.71, 0.71, 0.71, 1)
+texture = ExtResource("2_35den")
 
 [node name="ContentMargins" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -33,11 +35,9 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Title" type="Label" parent="ContentMargins/ContentVbox"]
+[node name="TextureRect" type="TextureRect" parent="ContentMargins/ContentVbox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 72
-text = "The Game"
-horizontal_alignment = 1
+texture = ExtResource("3_2133f")
 
 [node name="HSeparator" type="HSeparator" parent="ContentMargins/ContentVbox"]
 layout_mode = 2
