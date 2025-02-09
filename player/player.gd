@@ -44,6 +44,8 @@ var actionDirs: Dictionary = {
 	right: 1
 }
 
+var invincible := false
+
 @export var deviceId = 0
 @export var useController = false
 
@@ -235,5 +237,6 @@ func parry_logic(delta: float) -> void:
 
 func _on_hurtbox_body_entered(body):
 	body.queue_free()
-	killed.emit(self)
-	$hurtbox/CollisionShape2D.set_deferred("disabled", true)
+	if !invincible:
+		killed.emit(self)
+		$hurtbox/CollisionShape2D.set_deferred("disabled", true)

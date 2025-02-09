@@ -88,29 +88,37 @@ func clear_players():
 func _ready() -> void:
 	HUD = $MatchHUD
 
+# called when each player died
 func playerDeath(playerDied) -> void:
 	alivePlayers -= 1	
+	
+	# find and free dead players
 	for i in range(playerNum):
 		if playerList[i] == playerDied:
 			playerList[i].queue_free()
 			playerList[i] = null
 			break
 				
-		
-	print(playerList)
+	
 	if alivePlayers != 1:
 		return
+		
+	# only one player standing
+	
+	# give player point, and make invincible
 	for i in range(playerNum):
 		if playerList[i] != null:
+			playerList[i].invincible = true
 			playerPoints[i] += 1
 			break
+			
 	matchState = "MATCHOVER"
-	blockPlayerInput = true
 	HUD.show_scores(playerPoints)
 	$NextMatchTimer.start()
 	await $NextMatchTimer.timeout
 	HUD.hide_scores()
 	
+	get_tree().call_group("projectiles", "queue_free")
 	init_match()
 	start_match()
 		
