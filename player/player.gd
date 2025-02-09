@@ -255,6 +255,8 @@ func shooting_logic(delta: float) -> void:
 				new_projectile.global_position = global_position + direction.normalized().rotated(i * 0.15) * $bullet_spawn.shape.radius # make sure we havent set a scale!
 
 			$AnimatedSprite2D.play("attack")
+			$ShootSound.pitch_scale = randf() * 2 + 1
+			$ShootSound.play(0)
 			animation_lock = 0.2
 
 			cooldown = COOLDOWN_TIME

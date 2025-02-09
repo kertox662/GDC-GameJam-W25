@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0aeqp0xyj3tv"]
+
+[ext_resource type="Script" path="res://game/round_summary.gd" id="1_5odjv"]
+[ext_resource type="PackedScene" uid="uid://ca3jv5keyutqo" path="res://game/player_summary.tscn" id="1_ccn81"]
+[ext_resource type="FontFile" uid="uid://b7dvit88k1het" path="res://assets/font/dogica.ttf" id="2_issu5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pjqlv"]
+bg_color = Color(0.26, 0.26, 0.26, 0.592157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifvn2"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="RoundSummary" type="PanelContainer"]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_pjqlv")
+script = ExtResource("1_5odjv")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifvn2")
+
+[node name="Summaries" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Winner" type="Label" parent="CenterContainer/PanelContainer/Summaries"]
+visible = false
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_issu5")
+theme_override_font_sizes/font_size = 11
+text = "Winner: P1"
+
+[node name="PlayerSummary" parent="CenterContainer/PanelContainer/Summaries" instance=ExtResource("1_ccn81")]
+visible = false
+layout_mode = 2
+
+[node name="PlayerSummary2" parent="CenterContainer/PanelContainer/Summaries" instance=ExtResource("1_ccn81")]
+visible = false
+layout_mode = 2
+
+[node name="PlayerSummary3" parent="CenterContainer/PanelContainer/Summaries" instance=ExtResource("1_ccn81")]
+visible = false
+layout_mode = 2
+
+[node name="PlayerSummary4" parent="CenterContainer/PanelContainer/Summaries" instance=ExtResource("1_ccn81")]
+visible = false
+layout_mode = 2

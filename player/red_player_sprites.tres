@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=16 format=3 uid="uid://wa6pen45rfae"]
+[gd_resource type="SpriteFrames" load_steps=16 format=3 uid="uid://2qrwm41thd14"]
 
 [ext_resource type="Texture2D" uid="uid://fwpcj0dv5mla" path="res://assets/player/attacksprite.png" id="1_3drxw"]
 [ext_resource type="Texture2D" uid="uid://bgm47fx8ixodk" path="res://assets/player/idle, jump, shoot, death sprite_sheet.png" id="1_cisg0"]
