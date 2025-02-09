@@ -131,7 +131,7 @@ func playerDeath(playerDied) -> void:
 	if winner > 0:
 		matchState = "GAMEOVER"
 		#HUD.show_winner(winner)
-		summary.set_winner(winner - 1)
+		summary.set_winner(winner)
 	else:
 		matchState = "MATCHOVER"
 		

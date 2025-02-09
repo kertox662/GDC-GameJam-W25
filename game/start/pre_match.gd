@@ -36,6 +36,7 @@ func handle_player_join(device: InputDevice):
 			players_joined += 1
 			if (players_joined >= MIN_PLAYERS):
 				$MarginContainer/VBoxContainer/MarginContainer/BottomRow/StartButton.disabled = false
+			$PlayerJoin.play(0)
 			break
 		playerInd += 1
 
@@ -46,6 +47,7 @@ func handle_player_leave(device: InputDevice):
 			players_joined -= 1
 			if (players_joined >= MIN_PLAYERS):
 				$MarginContainer/VBoxContainer/MarginContainer/BottomRow/StartButton.disabled = true
+			$PlayerLeave.play(0)
 			break
 
 func handle_match_start():
@@ -55,10 +57,15 @@ func handle_match_start():
 		if child.inputDevice:
 			var data = child.get_player_data()
 			data.push_back(ind)
-			players.push_back(data)			
+			players.push_back(data)
 		ind += 1
 	if players.size() < MIN_PLAYERS:
 		return
+		
+	$StartGame.play(0)
+	$StartTimer.start()
+	await $StartTimer.timeout
+	
 	var matchInst = matchScene.instantiate()
 	matchInst.initialize_game(players, winGoal)
 	get_tree().root.add_child(matchInst)
