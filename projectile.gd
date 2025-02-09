@@ -13,7 +13,7 @@ func _ready():
 var previous_position := Vector2(0, 0)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-func _process(delta):
+func _physics_process(delta):
 	$Icon.global_rotation = previous_position.angle_to_point(global_position) - PI / 2
 	previous_position = global_position
 	#$Icon.rotation = -get_parent().rotation
