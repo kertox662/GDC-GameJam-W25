@@ -46,6 +46,7 @@ func handle_match_start():
 	var matchInst = matchScene.instantiate()
 	matchInst.initialize_game(players, 3)
 	get_tree().root.add_child(matchInst)
+	matchInst.start_match()
 	queue_free()
 
 func is_player_joined(device: InputDevice):

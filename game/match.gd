@@ -3,7 +3,7 @@ extends Node2D
 # Where the game is played, holds the level and players
 
 var playerScene : PackedScene = preload("res://player/player.tscn")
-@onready var HUD = $MatchHUD
+var HUD
 
 const TOTAL_LEVELS = 2
 
@@ -36,7 +36,6 @@ func initialize_game(configs:Array, win_goal:int) -> void:
 	winGoal = win_goal
 	
 	init_match()
-	start_match()
 
 func init_match(level_index : int = -1) -> void:
 	clear_players()
@@ -86,8 +85,8 @@ func clear_players():
 	playerList = []
 
 # Called when the node enters the scene tree for the first time.
-#func _ready() -> void:
-	#initialize_game([[0,false],[0,true],[1,true],[2,true]], 3)
+func _ready() -> void:
+	HUD = $MatchHUD
 
 func playerDeath(playerDied) -> void:
 	alivePlayers -= 1	
@@ -105,11 +104,15 @@ func playerDeath(playerDied) -> void:
 		if playerList[i] != null:
 			playerPoints[i] += 1
 			break
-			
+	matchState = "MATCHOVER"
 	blockPlayerInput = true
 	HUD.show_scores(playerPoints)
-	#init_match()
-	#start_match()
+	$NextMatchTimer.start()
+	await $NextMatchTimer.timeout
+	HUD.hide_scores()
+	
+	init_match()
+	start_match()
 		
 var count = 0
 func _input(event: InputEvent) -> void:
