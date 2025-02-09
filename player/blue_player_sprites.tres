@@ -1,14 +1,14 @@
 [gd_resource type="SpriteFrames" load_steps=15 format=3 uid="uid://bj8tlybod1guv"]
 
-[ext_resource type="Texture2D" uid="uid://fwpcj0dv5mla" path="res://assets/player/attacksprite.png" id="1_cx30k"]
 [ext_resource type="Texture2D" uid="uid://dwlrjgcpq37uk" path="res://assets/sprite_sheet-recolour3.png" id="1_gb1ew"]
+[ext_resource type="Texture2D" uid="uid://di3qwtr3cx6do" path="res://assets/sprite_sheet-1.png" id="1_udvlp"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_t78qf"]
-atlas = ExtResource("1_cx30k")
+[sub_resource type="AtlasTexture" id="AtlasTexture_apxgi"]
+atlas = ExtResource("1_udvlp")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0kegt"]
-atlas = ExtResource("1_cx30k")
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1ulf"]
+atlas = ExtResource("1_udvlp")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_08lwq"]
@@ -55,7 +55,7 @@ region = Rect2(128, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_t78qf")
+"texture": SubResource("AtlasTexture_apxgi")
 }],
 "loop": true,
 "name": &"attack",
@@ -63,7 +63,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0kegt")
+"texture": SubResource("AtlasTexture_d1ulf")
 }],
 "loop": true,
 "name": &"charging",
