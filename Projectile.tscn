@@ -1,19 +1,19 @@
 [gd_scene load_steps=5 format=3 uid="uid://o8s4bc0b0goy"]
 
 [ext_resource type="Script" path="res://projectile.gd" id="1_x35ce"]
-[ext_resource type="Texture2D" uid="uid://dfj1peblw3fq5" path="res://assets/droplet.png" id="2_k64mi"]
+[ext_resource type="Texture2D" uid="uid://cml5kcl80my8t" path="res://assets/droplet new.PNG" id="2_0ec16"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eeo3r"]
 bounce = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v8hox"]
-radius = 2.0
+radius = 3.0
 
 [node name="Projectile" type="RigidBody2D" groups=["projectiles"]]
 collision_layer = 192
-collision_mask = 192
+collision_mask = 32
 physics_material_override = SubResource("PhysicsMaterial_eeo3r")
-gravity_scale = 0.7
+angular_damp_mode = 1
 script = ExtResource("1_x35ce")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -21,7 +21,8 @@ shape = SubResource("CircleShape2D_v8hox")
 one_way_collision_margin = 0.0
 
 [node name="Icon" type="Sprite2D" parent="."]
-texture = ExtResource("2_k64mi")
-offset = Vector2(0, -1.06)
+scale = Vector2(2, 2)
+texture = ExtResource("2_0ec16")
+offset = Vector2(0, -2.19)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

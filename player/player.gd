@@ -49,14 +49,35 @@ var invincible := false
 @export var deviceId = 0
 @export var useController = false
 
+var running
+var charging
+
+var animation_lock = 0
+
+func animation_logic(delta):
+	if animation_lock > 0:
+		animation_lock -= delta
+		return
+
+	if hold_time > 0.0:
+		$AnimatedSprite2D.play("charging")
+		return
+
+	if is_jumping:
+		$AnimatedSprite2D.play("jump")
+	elif running:
+		$AnimatedSprite2D.play("running")
+	else:
+		$AnimatedSprite2D.play("idle")
+	
 func _ready():
 	var inputDevice = InputDevice.new(deviceId, useController)
 	$Input.initialize(inputDevice, actions, actionDirs)
-	$AnimatedSprite2D.play("idle")
 
 func _process(delta):
-	update_direction()
+	update_shooting_direction()
 	shooting_logic(delta)
+	animation_logic(delta)
 
 func get_input() -> Dictionary:
 	var x = int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left))
@@ -91,9 +112,10 @@ func x_movement(delta: float) -> void:
 	# Stop if we're not doing movement inputs.
 	if x_dir == 0:
 		velocity.x = Vector2(velocity.x, 0).move_toward(Vector2(0,0), deceleration * delta).x
-		$AnimatedSprite2D.play("idle")
+		running = false
 		return
-	$AnimatedSprite2D.play("running")
+	
+	running = true
 	
 	# If we are doing movement inputs and above max speed, don't accelerate nor decelerate
 	# Except if we are turning
@@ -120,25 +142,32 @@ func set_direction(hor_direction) -> void:
 	apply_scale(Vector2(hor_direction * face_direction, 1)) # flip
 	face_direction = hor_direction # remember direction
 
-var direction := Vector2(0, -1)
-func update_direction() -> void:
+
+#var direction := Vector2(1, -0.5)
+var direction := Vector2(0.5, -1)
+func update_shooting_direction() -> void:
 	var new_direction := Vector2(0, 0)
-	if useController:
-		new_direction = Vector2($Input.get_joystick_value("move_right"), $Input.get_joystick_value("move_down"))
-	else:
-		var x = int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left))
-		var y = int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up))
-		new_direction = Vector2(x, y)
+	#if useController:
+		##new_direction = Vector2($Input.get_joystick_value("move_right"), $Input.get_joystick_value("move_down"))
+		##new_direction = Vector2(sign($Input.get_joystick_value("move_right")), -1.5)
+	#else:
+		##if $Input.is_action_pressed("jump"):
+			##new_direction = Vector2(face_direction, -2)
+		##else:
+			##new_direction = Vector2(face_direction, -0.1)
+
+	new_direction = Vector2(face_direction, -1.5)
+
 	if not new_direction.is_zero_approx():
 		direction = new_direction
+
 
 func jump_logic(_delta: float) -> void:
 	# Reset our jump requirements
 	if is_on_floor():
 		jump_coyote_timer = jump_coyote
 		is_jumping = false
-	else:
-		$AnimatedSprite2D.play("jump")
+
 	if get_input()["just_jump"]:
 		jump_buffer_timer = jump_buffer
 	
@@ -193,25 +222,28 @@ func timers(delta: float) -> void:
 var cooldown := 0.0
 var hold_time := 0.0
 
+
 func shooting_logic(delta: float) -> void:
 	cooldown -= delta
+	if cooldown > 0:
+		return
 	if $Input.is_action_pressed("shoot"):
 		hold_time += delta
-	if $Input.is_action_just_released("shoot"):
-		# create projectile
-		if cooldown <= 0:
-			print("shooting!")
-			var new_projectile : Projectile = Globals.projectile.instantiate()
-			get_parent().add_child(new_projectile)
-
-			for i in range(1):
+	if $Input.is_action_just_released("shoot") or hold_time > 2.0:
+			var shots = ceil(hold_time * 2)
+			for i in range(shots):
 				# calculate direction
-				print(direction * max(hold_time * 1000.0, 1000))
-				new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction * max(150, min(hold_time * 1000.0, 500))
+				var new_projectile : Projectile = Globals.projectile.instantiate()
+				get_parent().add_child(new_projectile)
+				new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction.normalized().rotated(i * 0.15) * min(200.0 + hold_time * 200.0, 400.0) * randf_range(0.8, 1.2)
 				# random
-				new_projectile.apply_central_force(Vector2(randi_range(-200, 200), randi_range(-200, 200)))
-				new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius # make sure we havent set a scale!
-			cooldown = 0
+				#new_projectile.apply_central_force(Vector2(randi_range(-50, 50), randi_range(-50, 50)))
+				new_projectile.global_position = global_position + direction.normalized().rotated(i * 0.15) * $bullet_spawn.shape.radius # make sure we havent set a scale!
+
+			$AnimatedSprite2D.play("attack")
+			animation_lock = 0.2
+
+			cooldown = 0.2
 			hold_time = 0
 			ammo -= 1
 
@@ -227,8 +259,7 @@ func parry_logic(delta: float) -> void:
 			get_parent().add_child(new_projectile)
 
 			# calculate direction
-			print(direction * max(hold_time * 1000.0, 1000))
-			new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction * max(100, min(hold_time * 1000.0, 500))
+			new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction.normalized() * max(100, min(hold_time * 1000.0, 500))
 			# random
 			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
 			new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius # make sure we havent set a scale!
@@ -239,4 +270,4 @@ func _on_hurtbox_body_entered(body):
 	body.queue_free()
 	if !invincible:
 		killed.emit(self)
-		$hurtbox/CollisionShape2D.set_deferred("disabled", true)
+		$hurtbox/hurtboxshape.set_deferred("disabled", true)

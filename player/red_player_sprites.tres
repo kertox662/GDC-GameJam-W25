@@ -1,7 +1,16 @@
-[gd_resource type="SpriteFrames" load_steps=13 format=3 uid="uid://2qrwm41thd14"]
+[gd_resource type="SpriteFrames" load_steps=16 format=3 uid="uid://wa6pen45rfae"]
 
+[ext_resource type="Texture2D" uid="uid://fwpcj0dv5mla" path="res://assets/player/attacksprite.png" id="1_3drxw"]
 [ext_resource type="Texture2D" uid="uid://bgm47fx8ixodk" path="res://assets/player/idle, jump, shoot, death sprite_sheet.png" id="1_cisg0"]
 [ext_resource type="Texture2D" uid="uid://dp6okfbhafsm8" path="res://assets/player/running.png" id="2_0jy5j"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d586i"]
+atlas = ExtResource("1_3drxw")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6w5xd"]
+atlas = ExtResource("1_3drxw")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nlgi2"]
 atlas = ExtResource("1_cisg0")
@@ -45,6 +54,22 @@ region = Rect2(64, 0, 32, 32)
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d586i")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6w5xd")
+}],
+"loop": true,
+"name": &"charging",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nlgi2")

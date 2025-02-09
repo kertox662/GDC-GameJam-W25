@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bhgvlhgmv0eku"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_732um"]
-[ext_resource type="SpriteFrames" uid="uid://3edib7el7ndp" path="res://player/yellow_player_sprites.tres" id="2_mylnf"]
+[ext_resource type="SpriteFrames" uid="uid://dlewf81hiqo5m" path="res://player/yellow_player_sprites.tres" id="2_qfr8t"]
 [ext_resource type="PackedScene" uid="uid://bcn1utyhietww" path="res://player/multi_controller_input_map.tscn" id="3_us6v1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kv2pt"]
@@ -13,18 +13,18 @@ radius = 20.025
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3pqji"]
 radius = 5.0
-height = 28.0
+height = 16.0
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_732um")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-sprite_frames = ExtResource("2_mylnf")
-animation = &"idle"
+sprite_frames = ExtResource("2_qfr8t")
+animation = &"attack"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(0, 6)
 shape = SubResource("CapsuleShape2D_kv2pt")
 
 [node name="Input" parent="." instance=ExtResource("3_us6v1")]
@@ -34,12 +34,11 @@ shape = SubResource("CircleShape2D_luofc")
 disabled = true
 
 [node name="hurtbox" type="Area2D" parent="."]
-position = Vector2(0, -2)
 collision_layer = 0
 collision_mask = 128
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox"]
-position = Vector2(0, 2)
+[node name="hurtboxshape" type="CollisionShape2D" parent="hurtbox"]
+position = Vector2(0, 6)
 shape = SubResource("CapsuleShape2D_3pqji")
 
 [connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
