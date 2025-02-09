@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=4 uid="uid://dkptyrtqsg3q8"]
+[gd_scene load_steps=6 format=4 uid="uid://d10dcq5x6ydcn"]
 
 [ext_resource type="PackedScene" uid="uid://bflk2amke2u0e" path="res://game/level/level.tscn" id="1_jdint"]
-[ext_resource type="PackedScene" uid="uid://dydlytq6lqts5" path="res://game/level/steam_vent.tscn" id="2_1hvrn"]
+[ext_resource type="PackedScene" uid="uid://del0s4a1bi6dc" path="res://game/level/steam_vent.tscn" id="2_1hvrn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2dmt4"]
 size = Vector2(20, 97)

@@ -139,6 +139,8 @@ func playerDeath(playerDied) -> void:
 	
 	HUD.hide_scores()
 	get_tree().call_group("projectiles", "queue_free")
+	get_tree().call_group("corpses", "queue_free")
+	
 	init_match()
 	start_match()
 		

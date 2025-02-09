@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://dq1l158tvu60m"]
+
+[ext_resource type="Texture2D" uid="uid://c6avrlhbu5uqr" path="res://assets/death.PNG" id="1_uvp3s"]
+[ext_resource type="Texture2D" uid="uid://c4v5qashy0iov" path="res://assets/effects/smoke.png" id="2_0l0y2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_alumb"]
+size = Vector2(17, 3)
+
+[node name="Corpse" type="RigidBody2D" groups=["corpses"]]
+lock_rotation = true
+angular_damp = 1e+08
+
+[node name="Death" type="Sprite2D" parent="."]
+texture = ExtResource("1_uvp3s")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 32
+lifetime = 0.5
+one_shot = true
+texture = ExtResource("2_0l0y2")
+emission_shape = 1
+emission_sphere_radius = 11.7
+direction = Vector2(0, -1)
+gravity = Vector2(0, -25)
+initial_velocity_max = 10.0
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+angle_min = -113.2
+angle_max = 80.9
+scale_amount_min = 0.01
+scale_amount_max = 0.03
+color = Color(1, 1, 1, 0.180392)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 14.5)
+shape = SubResource("RectangleShape2D_alumb")

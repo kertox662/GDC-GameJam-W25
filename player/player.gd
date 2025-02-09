@@ -262,7 +262,8 @@ func shooting_logic(delta: float) -> void:
 			ammo -= 1
 
 func parry_logic(delta: float) -> void:
-	cooldown -= delta
+	if cooldown > 0:
+		return
 	if $Input.is_action_pressed("shoot"):
 		hold_time += delta
 	if $Input.is_action_just_released("shoot"):
@@ -285,6 +286,9 @@ func _on_hurtbox_body_entered(body):
 	if !invincible:
 		killed.emit(self)
 		$hurtbox/hurtboxshape.set_deferred("disabled", true)
+		var corpse = Globals.corpse.instantiate()
+		corpse.position = position
+		get_parent().add_child(corpse)
 
 func _on_ventbox_area_entered(area: Area2D) -> void:
 	gravity_acceleration = BASE_GRAVITY * VENT_MULTIPLIER

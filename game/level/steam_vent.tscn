@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dydlytq6lqts5"]
+[gd_scene load_steps=3 format=3 uid="uid://del0s4a1bi6dc"]
 
 [ext_resource type="Texture2D" uid="uid://c4v5qashy0iov" path="res://assets/effects/smoke.png" id="1_dydd0"]
 [ext_resource type="Script" path="res://game/level/steam_vent.gd" id="1_k0sum"]
