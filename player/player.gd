@@ -3,20 +3,24 @@ class_name Player
 
 signal killed(CharacterBody2D)
 
+const BASE_GRAVITY = 1000
+const VENT_MULTIPLIER = -1.2
+
 var face_direction := 1
 var x_dir := 1
+var shoot_input_enabled = true
 
 var max_speed: float = 200
 var acceleration: float = 2000
 var turning_acceleration : float = 6400
 var deceleration: float = 3200
 
-var gravity_acceleration : float = 1000
+var gravity_acceleration : float = BASE_GRAVITY
 var gravity_max : float = 600
 var gravity_multiplier_when_small : float = 0.3
 
 var jump_height: float = 100
-var jump_force : float = 80
+var jump_force : float = 90
 var jump_cut : float = 0.25
 var jump_gravity_max : float = 500
 var jump_hang_treshold : float = 2.0
@@ -58,6 +62,12 @@ func _process(delta):
 	update_direction()
 	shooting_logic(delta)
 
+func enable_shooting():
+	shoot_input_enabled = true
+	
+func disable_shooting():
+	shoot_input_enabled = false
+
 func get_input() -> Dictionary:
 	var x = int($Input.is_action_pressed(right)) - int($Input.is_action_pressed(left))
 	var y = int($Input.is_action_pressed(down)) - int($Input.is_action_pressed(up))
@@ -71,7 +81,7 @@ func get_input() -> Dictionary:
 		"just_jump": $Input.is_action_just_pressed(jump),
 		"jump": $Input.is_action_pressed(jump),
 		"released_jump": $Input.is_action_just_released(jump),
-		"shoot": $Input.is_action_pressed(shoot)
+		"shoot": $Input.is_action_pressed(shoot) and shoot_input_enabled
 	}
 
 func _physics_process(delta: float) -> void:
@@ -166,11 +176,11 @@ func apply_gravity(delta: float) -> void:
 	var applied_gravity : float = 0
 	
 	# No gravity if we are grounded
-	if jump_coyote_timer > 0:
+	if jump_coyote_timer > 0 and gravity_acceleration >= 0:
 		return
 	
 	# Normal gravity limit
-	if velocity.y <= gravity_max:
+	if abs(velocity.y) <= gravity_max:
 		applied_gravity = gravity_acceleration * delta
 	
 	# If moving upwards while jumping, the limit is jump_gravity_max to achieve lower gravity
@@ -200,18 +210,18 @@ func shooting_logic(delta: float) -> void:
 	if $Input.is_action_just_released("shoot"):
 		# create projectile
 		if cooldown <= 0:
-			print("shooting!")
+			#print("shooting!")
 			var new_projectile : Projectile = Globals.projectile.instantiate()
 			get_parent().add_child(new_projectile)
 
 			for i in range(1):
 				# calculate direction
-				print(direction * max(hold_time * 1000.0, 1000))
+				#print(direction * max(hold_time * 1000.0, 1000))
 				new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction * max(150, min(hold_time * 1000.0, 500))
 				# random
 				new_projectile.apply_central_force(Vector2(randi_range(-200, 200), randi_range(-200, 200)))
 				new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius # make sure we havent set a scale!
-			cooldown = 0
+			cooldown = 0.3
 			hold_time = 0
 			ammo -= 1
 
@@ -222,12 +232,12 @@ func parry_logic(delta: float) -> void:
 	if $Input.is_action_just_released("shoot"):
 		# create projectile
 		if cooldown <= 0:
-			print("shooting!")
+			#print("shooting!")
 			var new_projectile : Projectile = Globals.projectile.instantiate()
 			get_parent().add_child(new_projectile)
 
 			# calculate direction
-			print(direction * max(hold_time * 1000.0, 1000))
+			#print(direction * max(hold_time * 1000.0, 1000))
 			new_projectile.linear_velocity = Vector2(velocity.x, 0) + direction * max(100, min(hold_time * 1000.0, 500))
 			# random
 			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
@@ -240,3 +250,10 @@ func _on_hurtbox_body_entered(body):
 	if !invincible:
 		killed.emit(self)
 		$hurtbox/CollisionShape2D.set_deferred("disabled", true)
+
+
+func _on_ventbox_area_entered(area: Area2D) -> void:
+	gravity_acceleration = BASE_GRAVITY * VENT_MULTIPLIER
+
+func _on_ventbox_area_exited(area: Area2D) -> void:
+	gravity_acceleration = BASE_GRAVITY

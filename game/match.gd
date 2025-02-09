@@ -6,7 +6,7 @@ var playerScene : PackedScene = preload("res://player/player.tscn")
 var preMatchScene : PackedScene = load("res://game/start/pre_match.tscn")
 var HUD
 
-const TOTAL_LEVELS = 2
+const TOTAL_LEVELS = 5
 
 var playerNum = 0          # number of players in game
 var alivePlayers = 0
@@ -43,7 +43,7 @@ func init_match(level_index : int = -1) -> void:
 	
 	var new_level_index
 	if level_index == -1:
-		new_level_index = randi_range(1, TOTAL_LEVELS)
+		new_level_index = randi_range(2, TOTAL_LEVELS)
 	else: new_level_index = level_index
 	
 	alivePlayers = playerNum
@@ -69,6 +69,8 @@ func init_match(level_index : int = -1) -> void:
 		
 func start_match():
 	blockPlayerInput = true
+	for player in playerList:
+		player.disable_shooting()
 	
 	matchState = "STARTING"
 	HUD.show_countdown()
@@ -78,6 +80,9 @@ func start_match():
 	matchState = "PLAYING"
 	HUD.hide_countdown()
 	blockPlayerInput = false
+	for player in playerList:
+		if player:
+			player.enable_shooting()
 		
 func clear_players():
 	for player in playerList:
@@ -139,7 +144,7 @@ func playerDeath(playerDied) -> void:
 		
 var count = 0
 func _input(event: InputEvent) -> void:
-	if blockPlayerInput:
+	if blockPlayerInput and event.is_action("shoot"):
 		get_viewport().set_input_as_handled()
 		
 func _process(delta: float) -> void:
