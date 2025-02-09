@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://batdik41slxxd"]
+[gd_scene load_steps=3 format=3 uid="uid://batdik41slxxd"]
 
 [ext_resource type="Script" path="res://globals.gd" id="1_4rcdt"]
+[ext_resource type="AudioStream" uid="uid://dnt4pa26qw8fg" path="res://assets/sounds/M'magic Bhomb - Plasticine Man.mp3" id="2_brno8"]
 
 [node name="Globals" type="Node2D"]
 script = ExtResource("1_4rcdt")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_brno8")
+volume_db = -10.0
+autoplay = true

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dnt4pa26qw8fg"
+path="res://.godot/imported/M'magic Bhomb - Plasticine Man.mp3-bf0de6d7076adba5f0fbfe1ed104c9ac.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/M'magic Bhomb - Plasticine Man.mp3"
+dest_files=["res://.godot/imported/M'magic Bhomb - Plasticine Man.mp3-bf0de6d7076adba5f0fbfe1ed104c9ac.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
