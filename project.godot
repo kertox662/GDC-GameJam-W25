@@ -127,6 +127,8 @@ start_game={
 
 [physics]
 
+3d/default_linear_damp=0.0
+3d/default_angular_damp=0.0
 2d/default_gravity=500.0
 2d/default_linear_damp=0.0
 2d/default_angular_damp=0.0

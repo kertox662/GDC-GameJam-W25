@@ -1,6 +1,7 @@
 extends Node2D
 
 var projectile := load("res://Projectile.tscn")
+var corpse := load("res://Corpse.tscn")
 
 
 var screen_size: Vector2i
