@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dydlytq6lqts5"]
+
+[ext_resource type="Texture2D" uid="uid://c4v5qashy0iov" path="res://assets/effects/smoke.png" id="1_dydd0"]
+[ext_resource type="Script" path="res://game/level/steam_vent.gd" id="1_k0sum"]
+
+[node name="SteamVent" type="Area2D"]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_k0sum")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 32
+lifetime = 2.0
+texture = ExtResource("1_dydd0")
+direction = Vector2(0, -1)
+gravity = Vector2(0, -25)
+initial_velocity_max = 10.0
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+angle_min = -113.2
+angle_max = 80.9
+scale_amount_min = 0.01
+scale_amount_max = 0.03
+color = Color(1, 1, 1, 0.180392)
