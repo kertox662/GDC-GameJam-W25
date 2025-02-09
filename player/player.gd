@@ -5,6 +5,7 @@ signal killed(CharacterBody2D)
 
 const BASE_GRAVITY = 1000
 const VENT_MULTIPLIER = -1.2
+const COOLDOWN_TIME = 0.3
 
 var face_direction := 1
 var x_dir := 1
@@ -177,6 +178,9 @@ func jump_logic(_delta: float) -> void:
 	if is_on_floor():
 		jump_coyote_timer = jump_coyote
 		is_jumping = false
+	
+	if gravity_acceleration < 0:
+		is_jumping = true
 
 	if get_input()["just_jump"]:
 		jump_buffer_timer = jump_buffer
@@ -253,7 +257,7 @@ func shooting_logic(delta: float) -> void:
 			$AnimatedSprite2D.play("attack")
 			animation_lock = 0.2
 
-			cooldown = 0.2
+			cooldown = COOLDOWN_TIME
 			hold_time = 0
 			ammo -= 1
 
@@ -273,7 +277,7 @@ func parry_logic(delta: float) -> void:
 			# random
 			#new_projectile.apply_central_force(Vector2(0, 1) * randi_range(2,4))
 			new_projectile.global_position = global_position + direction.normalized() * $bullet_spawn.shape.radius # make sure we havent set a scale!
-			cooldown = 0.2
+			cooldown = COOLDOWN_TIME
 			hold_time = 0
 
 func _on_hurtbox_body_entered(body):
